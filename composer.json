@@ -8,5 +8,12 @@
             "email": "lucasmgonzalez1992@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "vlucas/phpdotenv": "^2.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "SOAP\\": ""
+        }
+    }
 }
