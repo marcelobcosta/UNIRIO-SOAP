@@ -1,0 +1,12 @@
+{
+    "name": "lucasgonzalez/soap",
+    "description": "Exercício de SOAP",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Luke Gonzalez",
+            "email": "lucasmgonzalez1992@gmail.com"
+        }
+    ],
+    "require": {}
+}
