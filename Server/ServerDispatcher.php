@@ -1,24 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: marcelobrunocostaesilva
- * Date: 12/04/17
- * Time: 16:42
- */
 
 namespace SOAP\Server;
+
+use SOAP\Server\RequestHandler;
 
 
 class ServerDispatcher
 {
-    private static $instance;
     protected $server;
 
     public function __construct()
     {
         try{
             $this->server = new \SoapServer(null,[ 'uri' => getenv('ENTRY_POINT')]);
-            $this->server->setClass(\SOAP\Server\RequestHandler::class);
+            $this->server->setClass(RequestHandler::class);
             $this->server->handle();
         }catch(SoapFault $fault){
             print $fault->getMessage();
@@ -27,8 +22,10 @@ class ServerDispatcher
         self::$instance = $this;
     }
 
-    public static function getInstance()
+
+    //Isso não foi utilizado
+    public function __call($name,$arguments)
     {
-        return self::$instance;
+        return call_user_func([RequestHandler::class,$name],$arguments);
     }
 }

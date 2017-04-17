@@ -26,7 +26,17 @@ class ClientDispatcher
         self::$instance = $this;
     }
 
-    public function handle($function = 'teste',$params = [])
+    public function handle()
+    {
+        $function = $_GET['f'];
+
+        $params = $_GET;
+        unset($params['f']);
+
+        $this->return = $this->client->__soapCall($function,$params);
+    }
+
+    public function rawHandle($function,$params = [])
     {
         $this->return = $this->client->__soapCall($function,$params);
     }

@@ -7,7 +7,8 @@ use SOAP\Model\Publication;
 
 class RequestHandler
 {
-    public function teste($id) {
+
+    public function teste() {
         return Mock::publications()->toJson();
     }
 

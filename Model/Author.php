@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: marcelobrunocostaesilva
- * Date: 12/04/17
- * Time: 17:20
- */
 
 namespace SOAP\Model;
 
