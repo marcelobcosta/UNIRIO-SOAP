@@ -3,7 +3,7 @@
 
     $dispatcher = new \SOAP\Client\ClientDispatcher();
 
-    $dispatcher->handle($function,$params);
+    $dispatcher->handle();
 
     var_dump($dispatcher->getReturn());
 

@@ -18,9 +18,10 @@ class ClientDispatcher
     public function __construct()
     {
         $this->client = new \SoapClient(null, [
-            'location' => getenv('ENTRY_POINT'),
-            'uri'      => getenv('ENTRY_POINT'),
-            'trace'    => true
+            'location' => env('ENTRY_POINT'),
+            'uri'      => env('ENTRY_POINT'),
+            'trace'    => true,
+            'soap_version' => SOAP_1_2
         ]);
 
         self::$instance = $this;
@@ -33,7 +34,20 @@ class ClientDispatcher
         $params = $_GET;
         unset($params['f']);
 
-        $this->return = $this->client->__soapCall($function,$params);
+        try {
+            $this->return = $this->client->__soapCall($function, $params);
+        }catch(\Exception $e){
+            // Deu ruim
+        }
+
+        if(env('DEBUG_MODE',false)){
+            // Dump Request
+            var_dump($this->client->__getLastRequest());
+
+            // Dump Response
+            var_dump($this->client->__getLastResponse());
+
+        }
     }
 
     public function rawHandle($function,$params = [])

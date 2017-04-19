@@ -99,4 +99,17 @@ class RequestHandler
 
         $author->delete();
     }
+
+    public function consultaCep($cep)
+    {
+        $soap_client = new \SoapClient('https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl');
+
+        $data = [
+            'cep' => $cep
+        ];
+
+        $return = $soap_client->__soapCall('consultaCEP',['cep' => $data]);
+
+        return $return;
+    }
 }

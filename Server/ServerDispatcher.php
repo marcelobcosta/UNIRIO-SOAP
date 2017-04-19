@@ -12,7 +12,10 @@ class ServerDispatcher
     public function __construct()
     {
         try{
-            $this->server = new \SoapServer(null,[ 'uri' => getenv('ENTRY_POINT')]);
+            $this->server = new \SoapServer(null,[
+                'uri' => env('ENTRY_POINT'),
+                'soap_version' => SOAP_1_2
+            ]);
             $this->server->setClass(RequestHandler::class);
             $this->server->handle();
         }catch(SoapFault $fault){
@@ -24,8 +27,8 @@ class ServerDispatcher
 
 
     //Isso não foi utilizado
-    public function __call($name,$arguments)
-    {
-        return call_user_func([RequestHandler::class,$name],$arguments);
-    }
+//    public function __call($name,$arguments)
+//    {
+//        return call_user_func([RequestHandler::class,$name],$arguments);
+//    }
 }
