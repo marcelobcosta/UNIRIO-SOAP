@@ -64,12 +64,25 @@ class RequestHandler
         $publication->delete();
     }
 
-    public function createAuthor($name,$citationName,$cpf)
+    public function createAuthor($name,$citationName,$cpf,$cep)
     {
+        $soap_client = new \SoapClient('https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl');
+
+        $address_data = $soap_client->__soapCall('consultaCEP',[
+            [
+                'cep' => $cep
+            ]
+        ]);
+
         $author =  Author::create([
             'nome' => $name,
             'nomeDeCitacao' => $citationName,
-            'cpf' => $cpf
+            'cpf' => $cpf,
+            'cep' => $cep,
+            'state' => $address_data->uf,
+            'city' => $address_data->cidade,
+            'neighborhood' => $address_data->bairro,
+            'address' => $address_data->end
         ]);
 
         return $author->id;
@@ -82,14 +95,27 @@ class RequestHandler
         return $author->toArray();
     }
 
-    public function updateAuthor($id, $name,$citationName,$cpf)
+    public function updateAuthor($id, $name,$citationName,$cpf,$cep)
     {
+        $soap_client = new \SoapClient('https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl');
+
+        $address_data = $soap_client->__soapCall('consultaCEP',[
+            [
+                'cep' => $cep
+            ]
+        ]);
+
         $author = Author::find($id);
 
         $author->update([
             'nome' => $name,
             'nomeDeCitacao' => $citationName,
-            'cpf' => $cpf
+            'cpf' => $cpf,
+            'cep' => $cep,
+            'state' => $address_data->uf,
+            'city' => $address_data->cidade,
+            'neighborhood' => $address_data->bairro,
+            'address' => $address_data->end
         ]);
     }
 
@@ -105,10 +131,12 @@ class RequestHandler
         $soap_client = new \SoapClient('https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl');
 
         $data = [
-            'cep' => $cep
+            [
+                'cep' => $cep
+            ]
         ];
 
-        $return = $soap_client->__soapCall('consultaCEP',['cep' => $data]);
+        $return = $soap_client->__soapCall('consultaCEP',$data);
 
         return $return;
     }
